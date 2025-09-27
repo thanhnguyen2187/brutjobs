@@ -17,19 +17,19 @@ function handleStatusChange(newStatus: string) {
 function getStatusBadgeClass(status: string) {
   switch (status) {
     case "new":
-      return "brutal-alert-info";
+      return "brutal-color-info";
     case "applied":
-      return "brutal-alert-warning";
+      return "brutal-color-warning";
     case "hidden":
       return "";
     case "interviewing":
-      return "brutal-alert-warning";
+      return "brutal-color-warning";
     case "rejected":
-      return "brutal-alert-danger";
+      return "brutal-color-danger";
     case "offer":
-      return "brutal-alert-success";
+      return "brutal-color-success";
     case "accepted":
-      return "brutal-alert-success";
+      return "brutal-color-success";
     default:
       return "";
   }

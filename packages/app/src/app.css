@@ -77,20 +77,20 @@
     box-shadow: 4px 4px 0 #000;
   }
 
-  .brutal-alert-success {
-    @apply bg-green-200 text-black;
+  .brutal-color-success {
+    @apply bg-green-200;
   }
 
-  .brutal-alert-info {
-    @apply bg-blue-200 text-black;
+  .brutal-color-info {
+    @apply bg-blue-200;
   }
 
-  .brutal-alert-warning {
-    @apply bg-yellow-100 text-black;
+  .brutal-color-warning {
+    @apply bg-yellow-100;
   }
 
-  .brutal-alert-danger {
-    @apply bg-red-100 text-black;
+  .brutal-color-danger {
+    @apply bg-red-100;
   }
 
   /* Modal */
