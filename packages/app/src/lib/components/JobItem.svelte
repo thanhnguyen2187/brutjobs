@@ -17,21 +17,21 @@ function handleStatusChange(newStatus: string) {
 function getStatusBadgeClass(status: string) {
   switch (status) {
     case "new":
-      return "badge-primary";
+      return "brutal-alert-info";
     case "applied":
-      return "badge-info";
+      return "brutal-alert-warning";
     case "hidden":
-      return "badge-neutral";
+      return "";
     case "interviewing":
-      return "badge-warning";
+      return "brutal-alert-warning";
     case "rejected":
-      return "badge-error";
+      return "brutal-alert-danger";
     case "offer":
-      return "badge-success";
+      return "brutal-alert-success";
     case "accepted":
-      return "badge-success";
+      return "brutal-alert-success";
     default:
-      return "badge-ghost";
+      return "";
   }
 }
 
@@ -55,15 +55,16 @@ function getLocationDisplay(job: Job) {
 const nextStatuses = jobStore.getNextStatus(job.status);
 </script>
 
-<div class="card bg-base-100 shadow-sm border border-base-300">
-    <div class="card-body p-4">
+<div class="brutal-box">
+    <div class="p-4">
         <div class="flex justify-between items-start mb-3">
             <div class="flex-1">
-                <h3 class="card-title text-lg">{job.title}</h3>
+                <h3 class="text-lg">{job.title}</h3>
                 <p class="text-sm text-base-content/70 mb-2">{job.company}</p>
             </div>
             <div
-                class="badge {getStatusBadgeClass(job.status)}">{job.status}</div>
+                class="brutal-alert {getStatusBadgeClass(job.status)}"
+            >{job.status}</div>
         </div>
 
         <div class="space-y-2 mb-4">
@@ -74,8 +75,9 @@ const nextStatuses = jobStore.getNextStatus(job.status);
 
             <div class="flex items-center gap-2 text-sm">
                 <span class="font-medium">Level:</span>
-                <div
-                    class="badge {getLevelBadgeClass(job.level)}">{job.level}</div>
+                <div class="badge {getLevelBadgeClass(job.level)}">
+                    {job.level}
+                </div>
             </div>
 
             {#if job.domains.length > 0}
@@ -92,25 +94,12 @@ const nextStatuses = jobStore.getNextStatus(job.status);
         </div>
 
         {#if nextStatuses.length > 0}
-            <div class="card-actions justify-end">
-                <div class="dropdown dropdown-end">
-                    <div tabindex="0" role="button"
-                         class="btn btn-sm btn-outline">
-                        Change Status
-                    </div>
-                    <ul tabindex="0"
-                        class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow border border-base-300">
-                        {#each nextStatuses as status}
-                            <li>
-                                <button
-                                    onclick={() => handleStatusChange(status)}>
-                                    Mark as {status}
-                                </button>
-                            </li>
-                        {/each}
-                    </ul>
-                </div>
-            </div>
+            <select class="brutal-select">
+                <option>(pick to change status)</option>
+                {#each nextStatuses as status}
+                    <option>{status}</option>
+                {/each}
+            </select>
         {/if}
     </div>
 </div>

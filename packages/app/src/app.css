@@ -1,5 +1,131 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
 
-@plugin '@tailwindcss/typography';
-@plugin 'daisyui';
-@plugin '@tailwindcss/forms';
+@layer base {
+  html {
+    @apply font-mono;
+  }
+}
+
+@layer utilities {
+  .brutal-shadow {
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  .brutal-shadow-hover {
+    box-shadow: 6px 6px 0 #000;
+  }
+
+  /* Buttons */
+  .brutal-btn {
+    @apply inline-block py-3 px-6 text-base text-center no-underline text-black bg-white border-2 border-black cursor-pointer transition-all duration-200;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  .brutal-btn:hover {
+    box-shadow: 6px 6px 0 #000;
+  }
+
+  .brutal-btn:active {
+    box-shadow: 0 0 0 #000;
+  }
+
+  /* Forms */
+  .brutal-input {
+    @apply w-full py-3 px-3 mb-4 border-2 border-black;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  .brutal-textarea {
+    @apply w-full py-3 px-3 mb-4 border-2 border-black resize-y;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  .brutal-select {
+    @apply w-full py-3 px-3 mb-4 border-2 border-black;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  .brutal-label {
+    @apply mb-2 block;
+  }
+
+  /* Checkbox and Radio */
+  .brutal-checkbox,
+  .brutal-radio {
+    @apply inline-block w-auto mr-2;
+  }
+
+  .brutal-select-multiple {
+    @apply h-auto;
+  }
+
+  /* Box Component */
+  .brutal-box {
+    @apply p-4 border-2 border-black mb-4;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  /* Alerts */
+  .brutal-alert {
+    @apply p-4 border-2 border-black mb-4;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  .brutal-alert-success {
+    @apply bg-green-200 text-black;
+  }
+
+  .brutal-alert-info {
+    @apply bg-blue-200 text-black;
+  }
+
+  .brutal-alert-warning {
+    @apply bg-yellow-100 text-black;
+  }
+
+  .brutal-alert-danger {
+    @apply bg-red-100 text-black;
+  }
+
+  /* Modal */
+  .brutal-modal {
+    @apply hidden fixed top-0 left-0 w-full h-full justify-center items-center;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .brutal-modal-content {
+    @apply bg-white p-8 border-2 border-black;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  /* Progress Bar */
+  .brutal-progress {
+    @apply w-full bg-gray-300 border-2 border-black h-6;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  .brutal-progress-bar {
+    @apply h-full bg-black w-0 transition-all duration-200;
+  }
+
+  .brutal-progress-bar-25 {
+    @apply w-1/4;
+  }
+  .brutal-progress-bar-50 {
+    @apply w-1/2;
+  }
+  .brutal-progress-bar-75 {
+    @apply w-3/4;
+  }
+  .brutal-progress-bar-100 {
+    @apply w-full;
+  }
+
+  /* Code Container */
+  .brutal-code {
+    @apply bg-gray-100 border-2 border-black p-4 mb-4;
+    box-shadow: 4px 4px 0 #000;
+  }
+}

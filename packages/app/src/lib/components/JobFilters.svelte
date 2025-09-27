@@ -30,10 +30,10 @@ function handleDateFilter(date: DateFilter) {
   <div class="flex flex-col sm:flex-row gap-4">
     <div class="flex flex-col gap-2">
       <span class="text-sm font-medium">Filter by Status:</span>
-      <div class="btn-group btn-group-horizontal">
+      <div class="">
         {#each statusOptions as option}
           <button
-            class="btn btn-sm {jobStore.statusFilter === option.value ? 'btn-active' : 'btn-outline'}"
+            class="brutal-btn"
             onclick={() => handleStatusFilter(option.value)}
           >
             {option.label}
@@ -44,10 +44,10 @@ function handleDateFilter(date: DateFilter) {
 
     <div class="flex flex-col gap-2">
       <span class="text-sm font-medium">Filter by Date:</span>
-      <div class="btn-group btn-group-horizontal">
+      <div class="">
         {#each dateOptions as option}
           <button
-            class="btn btn-sm {jobStore.dateFilter === option.value ? 'btn-active' : 'btn-outline'}"
+            class="brutal-btn"
             onclick={() => handleDateFilter(option.value)}
           >
             {option.label}
