@@ -4,12 +4,13 @@ import type { DateFilter, StatusFilter } from "../types.js";
 
 const jobStore = getJobStore();
 
-const statusOptions: { value: StatusFilter; label: string }[] = [
-  { value: "all", label: "All Jobs" },
-  { value: "new", label: "New Jobs" },
-  { value: "applied", label: "Applied Jobs" },
-  { value: "hidden", label: "Hidden Jobs" },
-];
+const statusOptions: { value: StatusFilter; label: string; active: boolean }[] =
+  [
+    { value: "all", label: "All", active: true },
+    { value: "new", label: "New", active: false },
+    { value: "applied", label: "Applied", active: false },
+    { value: "hidden", label: "Hidden", active: false },
+  ];
 
 const dateOptions: { value: DateFilter; label: string }[] = [
   { value: "all", label: "All" },
@@ -27,13 +28,14 @@ function handleDateFilter(date: DateFilter) {
 </script>
 
 <div class="flex flex-col gap-4 mb-6">
-  <div class="flex flex-col sm:flex-row gap-4">
+  <div class="flex flex-col md:flex-row gap-2 sm:gap-8">
     <div class="flex flex-col gap-2">
       <span class="text-sm font-medium">Filter by Status:</span>
-      <div class="">
+      <div class="flex gap-2">
         {#each statusOptions as option}
           <button
             class="brutal-btn"
+            class:brutal-btn-selected={option.active}
             onclick={() => handleStatusFilter(option.value)}
           >
             {option.label}
@@ -44,7 +46,7 @@ function handleDateFilter(date: DateFilter) {
 
     <div class="flex flex-col gap-2">
       <span class="text-sm font-medium">Filter by Date:</span>
-      <div class="">
+      <div class="flex gap-2">
         {#each dateOptions as option}
           <button
             class="brutal-btn"
