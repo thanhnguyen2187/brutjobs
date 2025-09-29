@@ -88,6 +88,24 @@ function handleClickModal(e: Event) {
     onclick={handleClickModal}
 >
     <div class="brutal-modal-content">
-        Hello world
+        <form class="flex flex-col">
+            <label for="title">Title</label>
+            <input class="brutal-input" id="title" >
+            <label for="company">Company</label>
+            <input class="brutal-input" id="company" >
+            <label for="location">Location</label>
+            <input class="brutal-input" id="location" >
+            <label for="location">Level</label>
+            <select class="brutal-select">
+                <option>(pick one)</option>
+                <option>junior</option>
+                <option>middle</option>
+                <option>senior</option>
+                <option>staff</option>
+            </select>
+            <label for="domains">Domains</label>
+            <input class="brutal-input" id="domains">
+            <button class="brutal-btn mt-8">Save</button>
+        </form>
     </div>
 </dialog>
