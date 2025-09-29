@@ -6,10 +6,9 @@ const jobStore = getJobStore();
 
 const statusOptions: { value: StatusFilter; label: string; active: boolean }[] =
   [
-    { value: "all", label: "All", active: true },
-    { value: "new", label: "New", active: false },
-    { value: "applied", label: "Applied", active: false },
+    { value: "new", label: "New", active: true },
     { value: "hidden", label: "Hidden", active: false },
+    { value: "all", label: "All", active: false },
   ];
 
 const dateOptions: { value: DateFilter; label: string }[] = [

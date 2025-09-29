@@ -62,9 +62,8 @@ const nextStatuses = jobStore.getNextStatus(job.status);
                 <h3 class="text-lg">{job.title}</h3>
                 <p class="text-sm text-base-content/70 mb-2">{job.company}</p>
             </div>
-            <div
-                class="brutal-alert {getStatusBadgeClass(job.status)}"
-            >{job.status}</div>
+
+            <button class="brutal-btn">Hide</button>
         </div>
 
         <div class="space-y-2 mb-4">
@@ -92,14 +91,5 @@ const nextStatuses = jobStore.getNextStatus(job.status);
                 </div>
             {/if}
         </div>
-
-        {#if nextStatuses.length > 0}
-            <select class="brutal-select">
-                <option>(pick to change status)</option>
-                {#each nextStatuses as status}
-                    <option>{status}</option>
-                {/each}
-            </select>
-        {/if}
     </div>
 </div>
