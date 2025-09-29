@@ -24,10 +24,12 @@
   }
 
   .brutal-btn:hover {
-    box-shadow: 6px 6px 0 #000;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #000;
   }
 
   .brutal-btn:active {
+    transform: translate(4px, 4px);
     box-shadow: 0 0 0 #000;
   }
 
