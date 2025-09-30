@@ -24,18 +24,6 @@ function handleStatusFilter(status: StatusFilter) {
 function handleDateFilter(date: DateFilter) {
   jobStore.setDateFilter(date);
 }
-
-let modal: HTMLDialogElement;
-
-function showModal() {
-  modal.showModal();
-}
-
-function handleClickModal(e: Event) {
-  if (e.target === modal) {
-    modal.close();
-  }
-}
 </script>
 
 <div class="flex flex-col gap-4 mb-6">
@@ -71,41 +59,6 @@ function handleClickModal(e: Event) {
     </div>
 
     <div class="text-sm text-base-content/70">
-        Showing {jobStore.filteredJobs.length} job{jobStore.filteredJobs.length === 1 ? '' : 's'};
-        <button
-            class="underline"
-            onclick={showModal}
-        >
-            Add more
-        </button>
+        Showing {jobStore.filteredJobs.length} job{jobStore.filteredJobs.length === 1 ? '' : 's'}
     </div>
 </div>
-
-<dialog
-    id="modal"
-    bind:this={modal}
-    class="mx-auto my-auto"
-    onclick={handleClickModal}
->
-    <div class="brutal-modal-content">
-        <form class="flex flex-col">
-            <label for="title">Title</label>
-            <input class="brutal-input" id="title" >
-            <label for="company">Company</label>
-            <input class="brutal-input" id="company" >
-            <label for="location">Location</label>
-            <input class="brutal-input" id="location" >
-            <label for="location">Level</label>
-            <select class="brutal-select">
-                <option>(pick one)</option>
-                <option>junior</option>
-                <option>middle</option>
-                <option>senior</option>
-                <option>staff</option>
-            </select>
-            <label for="domains">Domains</label>
-            <input class="brutal-input" id="domains">
-            <button class="brutal-btn mt-8">Save</button>
-        </form>
-    </div>
-</dialog>
