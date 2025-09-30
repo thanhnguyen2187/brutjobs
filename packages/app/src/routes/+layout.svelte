@@ -5,7 +5,7 @@ let { children } = $props();
 </script>
 
 <svelte:head>
-	<title>Brute Jobs</title>
+	<title>Brut Jobs</title>
 </svelte:head>
 
 <main class="container mx-auto p-4">

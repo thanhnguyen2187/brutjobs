@@ -9,7 +9,7 @@ const jobStore = setJobStore();
 <div class="container mx-auto p-4">
   <div class="flex flex-col gap-6">
     <div class="flex justify-between items-center">
-      <h1 class="text-3xl font-bold">Rust Job Board</h1>
+      <h1 class="text-3xl font-bold">Brut Jobs</h1>
     </div>
 
     <JobFilters />
