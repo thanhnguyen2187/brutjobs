@@ -1,28 +1,31 @@
 <script lang="ts">
-import { getJobStore } from "../jobs.svelte.js";
-import type { FilterDate, FilterStatus } from "../types.js";
+import { Jobs } from "$lib/jobs-v2.svelte";
+import type { JobFilter } from "../types.js";
 
-const jobStore = getJobStore();
+const state: JobFilter.State = $state(Jobs.createDefaultFilterState());
 
-const statusOptions: { value: FilterStatus; label: string; active: boolean }[] =
-  [
-    { value: "new", label: "New", active: true },
-    { value: "hidden", label: "Hidden", active: false },
-    { value: "all", label: "All", active: false },
-  ];
+const statusOptions: {
+  value: JobFilter.Status;
+  label: string;
+  active: boolean;
+}[] = [
+  { value: "new", label: "New", active: true },
+  { value: "hidden", label: "Hidden", active: false },
+  { value: "all", label: "All", active: false },
+];
 
-const dateOptions: { value: FilterDate; label: string }[] = [
-  { value: "last_week", label: "Last Week" },
-  { value: "last_month", label: "Last Month" },
+const dateOptions: { value: JobFilter.Date; label: string }[] = [
+  { value: "last-week", label: "Last Week" },
+  { value: "last-month", label: "Last Month" },
   { value: "all", label: "All" },
 ];
 
-function handleStatusFilter(status: FilterStatus) {
-  jobStore.setStatusFilter(status);
+function handleStatusFilter(value: JobFilter.Status) {
+  Jobs.advanceFilterState({ state, event: { type: "new-status", value } });
 }
 
-function handleDateFilter(date: FilterDate) {
-  jobStore.setDateFilter(date);
+function handleDateFilter(value: JobFilter.Date) {
+  Jobs.advanceFilterState({ state, event: { type: "new-date", value } });
 }
 </script>
 
@@ -34,7 +37,7 @@ function handleDateFilter(date: FilterDate) {
                 {#each statusOptions as option}
                     <button
                         class="brutal-btn"
-                        class:brutal-btn-selected={option.active}
+                        class:brutal-btn-selected={option.value === state.status}
                         onclick={() => handleStatusFilter(option.value)}
                     >
                         {option.label}
@@ -49,6 +52,7 @@ function handleDateFilter(date: FilterDate) {
                 {#each dateOptions as option}
                     <button
                         class="brutal-btn"
+                        class:brutal-btn-selected={option.value === state.dateId}
                         onclick={() => handleDateFilter(option.value)}
                     >
                         {option.label}
@@ -59,6 +63,6 @@ function handleDateFilter(date: FilterDate) {
     </div>
 
     <div class="text-sm text-base-content/70">
-        Showing {jobStore.filteredJobs.length} job{jobStore.filteredJobs.length === 1 ? '' : 's'}
+        Showing {0} job(s)
     </div>
 </div>

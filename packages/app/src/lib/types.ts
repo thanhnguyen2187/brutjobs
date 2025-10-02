@@ -132,14 +132,27 @@ export type Job = {
 
 export type JobStoreState = "idling" | "loading" | "error";
 
-export type FilterDate = "last_week" | "last_month" | "all";
-export type FilterStatus = "new" | "applied" | "hidden" | "all";
-export type JobFilterState = {
-  status: FilterStatus;
-  dateId: FilterDate;
-  fromTimestampMs: number | undefined;
-  toTimestampMs: number | undefined;
-};
+export namespace JobFilter {
+  export type Date = "last-week" | "last-month" | "all";
+  export type Status = "new" | "applied" | "hidden" | "all";
+
+  export type State = {
+    status: Status;
+    dateId: Date;
+    fromTimestampMs: number | undefined;
+    toTimestampMs: number | undefined;
+  };
+
+  export type Event =
+    | {
+        type: "new-status";
+        value: Status;
+      }
+    | {
+        type: "new-date";
+        value: Date;
+      };
+}
 
 export function createJobEmpty(): Job {
   return {

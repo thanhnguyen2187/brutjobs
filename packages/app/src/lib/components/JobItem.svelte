@@ -1,5 +1,4 @@
 <script lang="ts">
-import { getJobStore } from "../jobs.svelte.js";
 import type { Job } from "../types.js";
 
 interface Props {
@@ -7,33 +6,6 @@ interface Props {
 }
 
 let { job }: Props = $props();
-
-const jobStore = getJobStore();
-
-function handleStatusChange(newStatus: string) {
-  jobStore.updateJobStatus(job.id, newStatus as any);
-}
-
-function getStatusBadgeClass(status: string) {
-  switch (status) {
-    case "new":
-      return "brutal-color-info";
-    case "applied":
-      return "brutal-color-warning";
-    case "hidden":
-      return "";
-    case "interviewing":
-      return "brutal-color-warning";
-    case "rejected":
-      return "brutal-color-danger";
-    case "offer":
-      return "brutal-color-success";
-    case "accepted":
-      return "brutal-color-success";
-    default:
-      return "";
-  }
-}
 
 function getLevelBadgeClass(level: string) {
   switch (level) {
@@ -51,8 +23,6 @@ function getLevelBadgeClass(level: string) {
 function getLocationDisplay(job: Job) {
   return `${job.location.type} - ${job.location.country}`;
 }
-
-const nextStatuses = jobStore.getNextStatus(job.status);
 </script>
 
 <div class="brutal-box">

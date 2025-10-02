@@ -1,9 +1,8 @@
 <script lang="ts">
 import JobFilters from "$lib/components/JobFilters.svelte";
 import JobItem from "$lib/components/JobItem.svelte";
-import { setJobStore } from "$lib/jobs.svelte.js";
 
-const jobStore = setJobStore();
+const jobs = [];
 </script>
 
 <div class="container mx-auto p-4">
@@ -15,10 +14,10 @@ const jobStore = setJobStore();
     <JobFilters />
 
     <div class="grid gap-4">
-      {#each jobStore.filteredJobs as job (job.id)}
+      {#each jobs as job (job.id)}
         <JobItem {job} />
       {:else}
-        <div class="text-center py-8 text-base-content/60">
+        <div class="text-center py-8">
           No jobs found matching your filters.
         </div>
       {/each}
