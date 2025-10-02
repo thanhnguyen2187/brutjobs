@@ -1,27 +1,27 @@
 <script lang="ts">
 import { getJobStore } from "../jobs.svelte.js";
-import type { DateFilter, StatusFilter } from "../types.js";
+import type { FilterDate, FilterStatus } from "../types.js";
 
 const jobStore = getJobStore();
 
-const statusOptions: { value: StatusFilter; label: string; active: boolean }[] =
+const statusOptions: { value: FilterStatus; label: string; active: boolean }[] =
   [
     { value: "new", label: "New", active: true },
     { value: "hidden", label: "Hidden", active: false },
     { value: "all", label: "All", active: false },
   ];
 
-const dateOptions: { value: DateFilter; label: string }[] = [
-  { value: "all", label: "All" },
+const dateOptions: { value: FilterDate; label: string }[] = [
   { value: "last_week", label: "Last Week" },
   { value: "last_month", label: "Last Month" },
+  { value: "all", label: "All" },
 ];
 
-function handleStatusFilter(status: StatusFilter) {
+function handleStatusFilter(status: FilterStatus) {
   jobStore.setStatusFilter(status);
 }
 
-function handleDateFilter(date: DateFilter) {
+function handleDateFilter(date: FilterDate) {
   jobStore.setDateFilter(date);
 }
 </script>

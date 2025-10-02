@@ -1,96 +1,54 @@
 import { getContext, setContext } from "svelte";
-import type { DateFilter, Job, JobStatus, StatusFilter } from "./types.js";
+import { SvelteSet } from "svelte/reactivity";
+import type {
+  FilterDate,
+  FilterStatus,
+  Job,
+  JobStatus,
+  JobStoreState,
+} from "./types.js";
 
 const JOB_STORE_KEY = Symbol("jobStore");
 
 export class JobStore {
   jobs = $state<Job[]>([]);
-  statusFilter = $state<StatusFilter>("all");
-  dateFilter = $state<DateFilter>("all");
+  state: JobStoreState = $state("idling");
+  filterStatus = $state<FilterStatus>("all");
+  filterDate = $state<FilterDate>("all");
 
-  constructor() {
-    this.loadSampleData();
-  }
+  idsHidden = $state(new SvelteSet());
 
-  private loadSampleData() {
-    const now = Date.now();
-    const oneWeek = 7 * 24 * 60 * 60 * 1000;
-    const oneMonth = 30 * 24 * 60 * 60 * 1000;
+  constructor() {}
 
-    this.jobs = [
-      {
-        id: "1",
-        title: "Senior Frontend Developer",
-        company: "TechCorp",
-        location: { type: "remote", country: "USA" },
-        level: "senior",
-        domains: ["web development", "AI"],
-        status: "new",
-        datePosted: now - oneWeek / 2,
-        dateUpdated: now - oneWeek / 2,
-      },
-      {
-        id: "2",
-        title: "Blockchain Engineer",
-        company: "CryptoStart",
-        location: { type: "hybrid", country: "Global" },
-        level: "middle",
-        domains: ["blockchain/cryptocurrency", "finance"],
-        status: "applied",
-        datePosted: now - oneWeek,
-        dateUpdated: now - oneWeek / 3,
-      },
-      {
-        id: "3",
-        title: "Junior Data Scientist",
-        company: "DataHub",
-        location: { type: "onsite", country: "Vietnam" },
-        level: "junior",
-        domains: ["data science", "AI"],
-        status: "interviewing",
-        datePosted: now - oneMonth / 2,
-        dateUpdated: now - oneWeek / 4,
-      },
-      {
-        id: "4",
-        title: "DevOps Engineer",
-        company: "CloudTech",
-        location: { type: "remote", country: "USA" },
-        level: "middle",
-        domains: ["devops", "databases"],
-        status: "hidden",
-        datePosted: now - oneMonth,
-        dateUpdated: now - oneMonth,
-      },
-      {
-        id: "5",
-        title: "Cybersecurity Specialist",
-        company: "SecureNet",
-        location: { type: "hybrid", country: "Global" },
-        level: "senior",
-        domains: ["cybersecurity", "finance"],
-        status: "rejected",
-        datePosted: now - oneMonth - oneWeek,
-        dateUpdated: now - oneWeek,
-      },
-    ];
+  filterByStatus(status: FilterStatus) {
+    switch (status) {
+      case "new": {
+        const nowMs = Date.now();
+        const oneDayMs = 24 * 60 * 60 * 1000;
+        return this.jobs.filter((job) => nowMs - job.datePosted <= oneDayMs);
+      }
+      case "hidden":
+        return this.jobs.filter((job) => this.idsHidden.has(job.id));
+      case "all":
+        return this.jobs;
+    }
   }
 
   get filteredJobs() {
     let filtered = this.jobs;
 
-    if (this.statusFilter !== "all") {
-      filtered = filtered.filter((job) => job.status === this.statusFilter);
+    if (this.filterStatus !== "all") {
+      filtered = filtered.filter((job) => job.status === this.filterStatus);
     }
 
-    if (this.dateFilter !== "all") {
+    if (this.filterDate !== "all") {
       const now = Date.now();
       const oneWeek = 7 * 24 * 60 * 60 * 1000;
       const oneMonth = 30 * 24 * 60 * 60 * 1000;
 
-      if (this.dateFilter === "last_week") {
+      if (this.filterDate === "last_week") {
         filtered = filtered.filter((job) => job.datePosted > now - oneWeek);
-      } else if (this.dateFilter === "last_month") {
+      } else if (this.filterDate === "last_month") {
         filtered = filtered.filter((job) => job.datePosted > now - oneMonth);
       }
     }
@@ -106,12 +64,12 @@ export class JobStore {
     }
   }
 
-  setStatusFilter(filter: StatusFilter) {
-    this.statusFilter = filter;
+  setStatusFilter(filter: FilterStatus) {
+    this.filterStatus = filter;
   }
 
-  setDateFilter(filter: DateFilter) {
-    this.dateFilter = filter;
+  setDateFilter(filter: FilterDate) {
+    this.filterDate = filter;
   }
 
   getNextStatus(currentStatus: JobStatus): JobStatus[] {

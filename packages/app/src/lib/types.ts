@@ -92,11 +92,28 @@ export function createCategoryDisplay(category: Category): CategoryDisplay {
   };
 }
 
-export type JobStatus = "new" | "applied" | "hidden" | "interviewing" | "rejected" | "offer" | "accepted";
+export type JobStatus =
+  | "new"
+  | "applied"
+  | "hidden"
+  | "interviewing"
+  | "rejected"
+  | "offer"
+  | "accepted";
 export type LocationType = "remote" | "hybrid" | "onsite";
 export type Country = "USA" | "Vietnam" | "Global";
 export type JobLevel = "junior" | "middle" | "senior";
-export type JobDomain = "blockchain/cryptocurrency" | "finance" | "databases" | "AI" | "web development" | "mobile development" | "devops" | "data science" | "cybersecurity" | "gaming";
+export type JobDomain =
+  | "blockchain/cryptocurrency"
+  | "finance"
+  | "databases"
+  | "AI"
+  | "web development"
+  | "mobile development"
+  | "devops"
+  | "data science"
+  | "cybersecurity"
+  | "gaming";
 
 export type Job = {
   id: string;
@@ -113,8 +130,16 @@ export type Job = {
   dateUpdated: number;
 };
 
-export type DateFilter = "last_week" | "last_month" | "all";
-export type StatusFilter = "new" | "applied" | "hidden" | "all";
+export type JobStoreState = "idling" | "loading" | "error";
+
+export type FilterDate = "last_week" | "last_month" | "all";
+export type FilterStatus = "new" | "applied" | "hidden" | "all";
+export type JobFilterState = {
+  status: FilterStatus;
+  dateId: FilterDate;
+  fromTimestampMs: number | undefined;
+  toTimestampMs: number | undefined;
+};
 
 export function createJobEmpty(): Job {
   return {
@@ -123,12 +148,12 @@ export function createJobEmpty(): Job {
     company: "",
     location: {
       type: "remote",
-      country: "Global"
+      country: "Global",
     },
     level: "middle",
     domains: [],
     status: "new",
     datePosted: Date.now(),
-    dateUpdated: Date.now()
+    dateUpdated: Date.now(),
   };
 }
