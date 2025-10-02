@@ -1,7 +1,11 @@
 <script lang="ts">
 import "../app.css";
+import { httpClient } from "$lib/default";
+import { setContext } from "svelte";
 
 let { children } = $props();
+
+setContext("HTTP_CLIENT", httpClient);
 </script>
 
 <svelte:head>

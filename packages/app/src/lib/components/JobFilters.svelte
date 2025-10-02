@@ -1,30 +1,41 @@
 <script lang="ts">
-import type { JobFilter } from "../types.js";
+import { getContext } from "svelte";
+import type { HttpClient } from "$lib/http-client";
+import { type JobFilter, Page } from "../types.js";
 
-const state: JobFilter.State = $state(Jobs.createDefaultFilterState());
+const httpClient = getContext<HttpClient>("HTTP_CLIENT");
+const { state }: { state: Page.State } = $props();
+const filter = $derived(state.filter);
 
 const statusOptions: {
   value: JobFilter.Status;
   label: string;
-  active: boolean;
 }[] = [
-  { value: "new", label: "New", active: true },
-  { value: "hidden", label: "Hidden", active: false },
-  { value: "all", label: "All", active: false },
+  { value: "new", label: "New" },
+  { value: "hidden", label: "Hidden" },
+  { value: "all", label: "All" },
 ];
 
 const dateOptions: { value: JobFilter.Date; label: string }[] = [
-  { value: "last-week", label: "Last Week" },
-  { value: "last-month", label: "Last Month" },
+  { value: "last-7-days", label: "Last Week" },
+  { value: "last-30-days", label: "Last Month" },
   { value: "all", label: "All" },
 ];
 
 function handleStatusFilter(value: JobFilter.Status) {
-  Jobs.advanceFilterState({ state, event: { type: "new-status", value } });
+  Page.advanceState({
+    state,
+    event: { type: "new-status", value },
+    httpClient,
+  });
 }
 
 function handleDateFilter(value: JobFilter.Date) {
-  Jobs.advanceFilterState({ state, event: { type: "new-date", value } });
+  Page.advanceState({
+    state,
+    event: { type: "new-date", value },
+    httpClient,
+  });
 }
 </script>
 
@@ -36,7 +47,7 @@ function handleDateFilter(value: JobFilter.Date) {
                 {#each statusOptions as option}
                     <button
                         class="brutal-btn"
-                        class:brutal-btn-selected={option.value === state.status}
+                        class:brutal-btn-selected={option.value === filter.status}
                         onclick={() => handleStatusFilter(option.value)}
                     >
                         {option.label}
@@ -51,7 +62,7 @@ function handleDateFilter(value: JobFilter.Date) {
                 {#each dateOptions as option}
                     <button
                         class="brutal-btn"
-                        class:brutal-btn-selected={option.value === state.dateId}
+                        class:brutal-btn-selected={option.value === filter.dateId}
                         onclick={() => handleDateFilter(option.value)}
                     >
                         {option.label}

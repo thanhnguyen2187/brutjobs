@@ -25,6 +25,10 @@
     box-shadow: 1px 1px 0 #000;
   }
 
+  .brutal-btn:disabled {
+    @apply cursor-not-allowed bg-gray-200 text-gray-700;
+  }
+
   .brutal-btn-selected {
     @apply border-dashed;
   }

@@ -49,6 +49,14 @@ export type HttpClient = {
   createCategory({ name }: CategoryEdit): Promise<void>;
   updateCategory({ id, name }: CategoryEdit): Promise<void>;
   deleteCategory({ id }: { id: string }): Promise<void>;
+
+  fetchJobs({
+    fromTimestamp,
+    toTimestamp,
+  }: {
+    fromTimestamp?: number;
+    toTimestamp?: number;
+  }): Promise<{ data: unknown[] }>;
 };
 
 export function createHttpClient(baseUrl: string | undefined): HttpClient {
@@ -192,6 +200,12 @@ export function createHttpClient(baseUrl: string | undefined): HttpClient {
       if (!resp.ok) {
         throw new Error(`Error happened deleting; status: ${resp.status}`);
       }
+    },
+    async fetchJobs() {
+      await new Promise((resolve) => setTimeout(resolve, 3_000));
+      return {
+        data: [],
+      };
     },
   };
 }
