@@ -1,5 +1,4 @@
 <script lang="ts">
-import { Jobs } from "$lib/jobs-v2.svelte";
 import type { JobFilter } from "../types.js";
 
 const state: JobFilter.State = $state(Jobs.createDefaultFilterState());
