@@ -14,8 +14,8 @@ let pageState = $state(Page.createDefaultState());
 
     <JobFilters state={pageState}/>
 
-    {#if pageState.fetching === "none"}
-      <div class="grid gap-4">
+    <div class="grid gap-4">
+      {#if pageState.fetching === "none"}
         {#each pageState.jobs as job (job.id)}
           <JobItem {job} />
         {:else}
@@ -23,15 +23,15 @@ let pageState = $state(Page.createDefaultState());
             No jobs found matching your filters.
           </div>
         {/each}
-      </div>
-    {:else if pageState.fetching === "in-progress"}
-      <div>
-        <span>Loading...</span>
-      </div>
-    {:else if pageState.fetching === "error"}
-      <div>
-        <span>Error happened! Please try again later!</span>
-      </div>
-    {/if}
+      {:else if pageState.fetching === "in-progress"}
+        <div class="text-center py-8">
+          <span>Loading...</span>
+        </div>
+      {:else if pageState.fetching === "error"}
+        <div class="text-center py-8">
+          <span>Error happened! Please try again later!</span>
+        </div>
+      {/if}
+    </div>
   </div>
 </div>
