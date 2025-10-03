@@ -25,14 +25,14 @@ pub struct Job {
     pub location_country: Option<String>,
     pub level: Option<String>,
     pub domains: Option<String>,
-    pub date_posted_timestamp_ms: Option<i32>,
-    pub date_updated_timestamp_ms: Option<i32>,
+    pub date_posted_timestamp_ms: Option<i64>,
+    pub date_updated_timestamp_ms: Option<i64>,
 }
 
 pub fn select_jobs(
     conn: &mut SqliteConnection,
-    from_timestamp_ms: Option<i32>,
-    to_timestamp_ms: Option<i32>,
+    from_timestamp_ms: Option<i64>,
+    to_timestamp_ms: Option<i64>,
     limit: Option<i32>,
 ) -> Result<Vec<Job>> {
     use crate::schema::jobs::dsl::*;
@@ -51,4 +51,11 @@ pub fn select_jobs(
     let records = query.select(Job::as_select()).load(conn)?;
 
     Ok(records)
+}
+
+pub fn create_job(conn: &mut SqliteConnection, record: &Job) -> Result<()> {
+    use crate::schema::jobs::dsl::*;
+    diesel::insert_into(jobs).values(record).execute(conn)?;
+
+    Ok(())
 }

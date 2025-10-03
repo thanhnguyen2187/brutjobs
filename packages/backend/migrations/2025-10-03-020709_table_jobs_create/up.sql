@@ -7,7 +7,7 @@ CREATE TABLE jobs
     location_country TEXT,
     level TEXT,
     domains TEXT,
-    date_posted_timestamp_ms INTEGER,
-    date_updated_timestamp_ms INTEGER
+    date_posted_timestamp_ms BIGINT,
+    date_updated_timestamp_ms BIGINT
 );
 

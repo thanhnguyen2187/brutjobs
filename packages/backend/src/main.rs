@@ -10,8 +10,7 @@ use crate::app_state::AppState;
 use crate::db::establish_connection;
 use crate::db_migration::run_migrations;
 use crate::err::Result;
-use crate::handlers::{handle_jobs_get};
-use axum::routing::{delete, put};
+use crate::handlers::{handle_jobs_get, handle_jobs_post};
 use axum::{
     Router,
     body::Bytes,
@@ -54,6 +53,7 @@ async fn main() -> Result<()> {
     let app = Router::new()
         .route("/api/v1/health", get(async || "alive!"))
         .route("/api/v1/jobs", get(handle_jobs_get))
+        .route("/api/v1/jobs", post(handle_jobs_post))
         .fallback(frontend::static_handler)
         .layer(
             CorsLayer::new()
