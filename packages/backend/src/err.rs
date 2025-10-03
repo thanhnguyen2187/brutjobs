@@ -1,6 +1,7 @@
-use axum::Json;
 use axum::http::StatusCode;
+use axum::http::header::ToStrError;
 use axum::response::{IntoResponse, Response};
+use axum::{Json, http};
 use serde_json::json;
 use snafu::prelude::*;
 
@@ -27,6 +28,12 @@ pub enum Error {
     #[snafu(display("Unable to acquire state lock"))]
     StateLock,
 
+    #[snafu(display("Invalid secret key; please put the valid value into header X-Secret-Key"))]
+    SecretKeyInvalid,
+
+    #[snafu(display("Error happened turning header value to string: {source}"))]
+    HeaderValueToStrError { source: ToStrError },
+
     #[snafu(display("Database data error: {message}"))]
     DatabaseDataError { message: String },
 
@@ -42,11 +49,17 @@ pub enum Error {
 
 impl IntoResponse for Error {
     fn into_response(self) -> Response {
-        (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            Json(json!({"success": false, "message": format!("{}", self)})),
-        )
-            .into_response()
+        match self {
+            Error::SecretKeyInvalid => (
+                StatusCode::BAD_REQUEST,
+                Json(json!({ "success": false, "message": format!("{}", self) })),
+            ),
+            _ => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({"success": false, "message": format!("{}", self)})),
+            ),
+        }
+        .into_response()
     }
 }
 
@@ -65,5 +78,11 @@ impl From<diesel::result::Error> for Error {
 impl From<chrono::ParseError> for Error {
     fn from(source: chrono::ParseError) -> Self {
         Error::ParseError { source }
+    }
+}
+
+impl From<ToStrError> for Error {
+    fn from(source: ToStrError) -> Self {
+        Error::HeaderValueToStrError { source }
     }
 }

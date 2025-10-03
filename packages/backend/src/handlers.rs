@@ -3,6 +3,7 @@ use crate::db::{Job, create_job, select_jobs};
 use crate::err::{Error, Result};
 use axum::Json;
 use axum::extract::{Query, State};
+use axum::http::HeaderMap;
 use chrono::format::Fixed::TimezoneOffset;
 use chrono::{DateTime, NaiveDateTime, Utc};
 use chrono::{FixedOffset, TimeZone};
@@ -12,7 +13,7 @@ use serde_json::{Value, json};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use tracing::info;
-use uuid::Uuid;
+use uuid::{Timestamp, Uuid};
 
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
@@ -120,11 +121,23 @@ pub struct PayloadJobsPost {
 }
 
 pub async fn handle_jobs_post(
+    headers: HeaderMap,
     State(state_arc): State<Arc<Mutex<AppState>>>,
     Json(payload): Json<PayloadJobsPost>,
 ) -> Result<Json<Value>> {
     if let Ok(mut state) = state_arc.lock() {
-        let job: Job = payload.into();
+        if let Some(secret_key) = headers.get("X-Secret-Key") {
+            let secret_key = secret_key.to_str()?;
+            info!("secret key: {}", secret_key);
+            if secret_key != state.secret_key {
+                return Err(Error::SecretKeyInvalid);
+            }
+        } else {
+            return Err(Error::SecretKeyInvalid);
+        }
+
+        let mut job: Job = payload.into();
+        job.id = Some(Uuid::now_v7().to_string());
         create_job(&mut state.conn, &job)?;
 
         return Ok(Json(json!({"success": true})));

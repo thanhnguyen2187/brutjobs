@@ -13,7 +13,6 @@ use crate::err::Result;
 use crate::handlers::{handle_jobs_get, handle_jobs_post};
 use axum::{
     Router,
-    body::Bytes,
     extract::MatchedPath,
     http::{HeaderMap, Request},
     response::{Html, Response},
@@ -23,7 +22,7 @@ use dotenvy::dotenv;
 use std::sync::{Arc, Mutex};
 use tower_http::cors::{Any, CorsLayer};
 use tower_http::trace::TraceLayer;
-use tracing::info;
+use tracing::{info, warn};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
@@ -49,7 +48,18 @@ async fn main() -> Result<()> {
     run_migrations(&mut conn);
     info!("Ran database migrations");
 
-    let shared_state = Arc::new(Mutex::new(AppState { conn }));
+    let host = std::env::var("HOST").unwrap_or(String::from("127.0.0.1"));
+    let port = std::env::var("PORT").unwrap_or(String::from("3000"));
+    let secret_key = std::env::var("SECRET_KEY").unwrap_or_else(|_| {
+        let default_value = "brutjob_secret_key";
+        warn!(
+            "Using default value `{}` for secret key! Please change it in production environment!",
+            default_value,
+        );
+        String::from(default_value)
+    });
+
+    let shared_state = Arc::new(Mutex::new(AppState { conn, secret_key }));
     let app = Router::new()
         .route("/api/v1/health", get(async || "alive!"))
         .route("/api/v1/jobs", get(handle_jobs_get))
@@ -64,8 +74,6 @@ async fn main() -> Result<()> {
         .layer(TraceLayer::new_for_http())
         .with_state(shared_state);
 
-    let host = std::env::var("HOST").unwrap_or(String::from("127.0.0.1"));
-    let port = std::env::var("PORT").unwrap_or(String::from("3000"));
     let listener = tokio::net::TcpListener::bind(format!("{}:{}", host, port)).await?;
 
     info!("Listening on http://{}:{}", host, port);
