@@ -1,11 +1,13 @@
 <script lang="ts">
-import type { Job } from "../types.js";
+import { httpClient } from "$lib/default";
+import { type Job, Page } from "../types.js";
 
 interface Props {
   job: Job;
+  state: Page.State;
 }
 
-let { job }: Props = $props();
+let { job, state }: Props = $props();
 
 function getLevelBadgeClass(level: string) {
   switch (level) {
@@ -23,6 +25,36 @@ function getLevelBadgeClass(level: string) {
 function getLocationDisplay(job: Job) {
   return `${job.locationType} - ${job.locationCountry}`;
 }
+
+function getAvailableStatusAction(jobId: string) {
+  if (state.jobIdsHidden.has(jobId)) {
+    return "Show";
+  } else {
+    return "Hide";
+  }
+}
+
+function handleStatusAction(jobId: string) {
+  if (state.jobIdsHidden.has(jobId)) {
+    Page.advanceState({
+      state,
+      event: {
+        type: "job-id-shown",
+        value: jobId,
+      },
+      httpClient,
+    });
+  } else {
+    Page.advanceState({
+      state,
+      event: {
+        type: "job-id-hidden",
+        value: jobId,
+      },
+      httpClient,
+    });
+  }
+}
 </script>
 
 <div class="brutal-box">
@@ -33,7 +65,12 @@ function getLocationDisplay(job: Job) {
                 <p class="text-sm text-base-content/70 mb-2">{job.company}</p>
             </div>
 
-            <button class="brutal-btn">Hide</button>
+            <button
+                class="brutal-btn"
+                onclick={() => handleStatusAction(job.id)}
+            >
+                {getAvailableStatusAction(job.id)}
+            </button>
         </div>
 
         <div class="space-y-2 mb-4">
@@ -44,7 +81,7 @@ function getLocationDisplay(job: Job) {
 
             <div class="flex items-center gap-2 text-sm">
                 <span class="font-medium">Level:</span>
-                <div class="badge {getLevelBadgeClass(job.level)}">
+                <div>
                     {job.level}
                 </div>
             </div>

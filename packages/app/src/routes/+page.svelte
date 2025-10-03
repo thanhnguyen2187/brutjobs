@@ -1,12 +1,16 @@
 <script lang="ts">
 import { onMount } from "svelte";
+import { SvelteSet } from "svelte/reactivity";
 import JobFilters from "$lib/components/JobFilters.svelte";
 import JobItem from "$lib/components/JobItem.svelte";
 import { httpClient } from "$lib/default";
 import { Page } from "$lib/types";
 
 let pageState = $state(Page.createDefaultState());
+let jobs = $derived(Page.listJobs(pageState));
+
 onMount(() => {
+  pageState.jobIdsHidden = new SvelteSet();
   Page.advanceState({
     state: pageState,
     httpClient,
@@ -28,8 +32,8 @@ onMount(() => {
 
     <div class="grid gap-4">
       {#if pageState.fetching === "none"}
-        {#each pageState.jobs as job (job.id)}
-          <JobItem {job} />
+        {#each jobs as job (job.id)}
+          <JobItem {job} state={pageState} />
         {:else}
           <div class="text-center py-8">
             No jobs found matching your filters.
