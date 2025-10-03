@@ -1,7 +1,7 @@
 <script lang="ts">
 import "../app.css";
-import { httpClient } from "$lib/default";
 import { setContext } from "svelte";
+import { httpClient } from "$lib/default";
 
 let { children } = $props();
 

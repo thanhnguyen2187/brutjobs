@@ -21,7 +21,7 @@ function getLevelBadgeClass(level: string) {
 }
 
 function getLocationDisplay(job: Job) {
-  return `${job.location.type} - ${job.location.country}`;
+  return `${job.locationType} - ${job.locationCountry}`;
 }
 </script>
 

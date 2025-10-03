@@ -127,10 +127,8 @@ export type Job = {
   id: string;
   title: string;
   company: string;
-  location: {
-    type: LocationType;
-    country: Country;
-  };
+  locationType: string;
+  locationCountry: string;
   level: JobLevel;
   domains: JobDomain[];
   status: JobStatus;
@@ -215,7 +213,7 @@ export namespace Page {
         let toTimestampMs: number | undefined;
         switch (event.value) {
           case "last-7-days":
-            fromDate = subDays(toDate, 30);
+            fromDate = subDays(toDate, 7);
             fromTimestampMs = fromDate?.getTime();
             toTimestampMs = toDate?.getTime();
             break;
@@ -259,12 +257,13 @@ export namespace Page {
   }
 
   export function createDefaultState(): State {
-    return {
+    const state: State = {
       jobs: [],
       jobIdsHidden: new Set(),
       fetching: "none",
       filter: JobFilter.createDefault(),
     };
+    return state;
   }
 }
 

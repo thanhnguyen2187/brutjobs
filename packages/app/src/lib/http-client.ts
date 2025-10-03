@@ -19,9 +19,11 @@ export type HttpClient = {
 export function createHttpClient(baseUrl: string | undefined): HttpClient {
   return {
     async fetchJobs() {
-      await new Promise((resolve) => setTimeout(resolve, 3_000));
+      const url = new URL("/api/v1/jobs", baseUrl);
+      const response = await fetch(url);
+      const responseJson = (await response.json()) as { data: unknown[] };
       return {
-        data: [],
+        data: responseJson.data,
       };
     },
   };

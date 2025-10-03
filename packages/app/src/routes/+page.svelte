@@ -1,9 +1,21 @@
 <script lang="ts">
+import { onMount } from "svelte";
 import JobFilters from "$lib/components/JobFilters.svelte";
 import JobItem from "$lib/components/JobItem.svelte";
+import { httpClient } from "$lib/default";
 import { Page } from "$lib/types";
 
 let pageState = $state(Page.createDefaultState());
+onMount(() => {
+  Page.advanceState({
+    state: pageState,
+    httpClient,
+    event: {
+      type: "new-date",
+      value: pageState.filter.dateId,
+    },
+  });
+});
 </script>
 
 <div class="container mx-auto p-4">
