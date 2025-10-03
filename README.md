@@ -1,25 +1,13 @@
-# Sifintra
+# Brut Jobs
 
-Simple Finance Tracker.
+Brut(alist) Job Board.
 
 ## Screenshots
 
 <details>
-  <summary><code>/overview</code></summary>
+  <summary>Home page</summary>
 
-  ![overview](screenshots/overview.png)
-</details>
-
-<details>
-  <summary><code>/transactions</code></summary>
-
-  ![overview](screenshots/transactions.png)
-</details>
-
-<details>
-  <summary><code>/categories</code></summary>
-
-  ![overview](screenshots/categories.png)
+  TBA
 </details>
 
 ## Usage
@@ -143,25 +131,4 @@ docker run \
 
 ## Deployment
 
-- SePay integration:
-
-Make sure that you have a Sepay account available, and you are able to visit
-https://my.sepay.vn/webhooks.
-
-<details>
-  <summary>Image 1</summary>
-
-  ![](screenshots/sepay-1.png)
-</details>
-
-Click on the blue button to add a new webhook. Make sure that the application is
-available publicly. For example, let's say the home page is reachable at
-`https://sifintra.deployed.domain`, then we can use the endpoint POST
-`https://sifintra.deployed.domain/api/v1/hooks/sepay` to receive Sepay's hook.
-
-<details>
-  <summary>Image 2</summary>
-
-  ![](screenshots/sepay-2.png)
-</details>
-
+TBA
