@@ -24,6 +24,9 @@ pub enum Error {
     #[snafu(display("Unable to acquire database lock"))]
     DatabaseLock,
 
+    #[snafu(display("Unable to acquire state lock"))]
+    StateLock,
+
     #[snafu(display("Database data error: {message}"))]
     DatabaseDataError { message: String },
 
