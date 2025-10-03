@@ -266,12 +266,12 @@ export namespace Page {
     return state;
   }
 
-  export function listJobs(state: State): Job[] {
+  export function listJobs(state: State, jobIdsHidden: string[]): Job[] {
     switch (state.filter.status) {
       case "new":
-        return state.jobs.filter((job) => !state.jobIdsHidden.has(job.id));
+        return state.jobs.filter((job) => !jobIdsHidden.includes(job.id));
       case "hidden":
-        return state.jobs.filter((job) => state.jobIdsHidden.has(job.id));
+        return state.jobs.filter((job) => jobIdsHidden.includes(job.id));
       // case "all":
       default:
         return state.jobs;

@@ -1,13 +1,12 @@
 <script lang="ts">
-import { httpClient } from "$lib/default";
-import { type Job, Page } from "../types.js";
+import type { Job } from "../types.js";
 
 interface Props {
   job: Job;
-  state: Page.State;
+  jobIdsHidden: { value: string[] };
 }
 
-let { job, state }: Props = $props();
+let { job, jobIdsHidden }: Props = $props();
 
 function getLevelBadgeClass(level: string) {
   switch (level) {
@@ -27,7 +26,7 @@ function getLocationDisplay(job: Job) {
 }
 
 function getAvailableStatusAction(jobId: string) {
-  if (state.jobIdsHidden.has(jobId)) {
+  if (jobIdsHidden.value.includes(jobId)) {
     return "Show";
   } else {
     return "Hide";
@@ -35,24 +34,11 @@ function getAvailableStatusAction(jobId: string) {
 }
 
 function handleStatusAction(jobId: string) {
-  if (state.jobIdsHidden.has(jobId)) {
-    Page.advanceState({
-      state,
-      event: {
-        type: "job-id-shown",
-        value: jobId,
-      },
-      httpClient,
-    });
+  const index = jobIdsHidden.value.findIndex((element) => element === jobId);
+  if (index !== -1) {
+    jobIdsHidden.value.splice(index);
   } else {
-    Page.advanceState({
-      state,
-      event: {
-        type: "job-id-hidden",
-        value: jobId,
-      },
-      httpClient,
-    });
+    jobIdsHidden.value.push(jobId);
   }
 }
 </script>

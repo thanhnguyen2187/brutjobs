@@ -1,6 +1,7 @@
 <script lang="ts">
 import { getContext } from "svelte";
 import type { HttpClient } from "$lib/http-client";
+import useLocalStorage from "$lib/use-local-storage.svelte";
 import { type JobFilter, Page } from "../types.js";
 
 const httpClient = getContext<HttpClient>("HTTP_CLIENT");

@@ -5,12 +5,13 @@ import JobFilters from "$lib/components/JobFilters.svelte";
 import JobItem from "$lib/components/JobItem.svelte";
 import { httpClient } from "$lib/default";
 import { Page } from "$lib/types";
+import useLocalStorage from "$lib/use-local-storage.svelte";
 
 let pageState = $state(Page.createDefaultState());
-let jobs = $derived(Page.listJobs(pageState));
+let jobIdsHidden = useLocalStorage<string[]>("job-ids-hidden", []);
+let jobs = $derived(Page.listJobs(pageState, jobIdsHidden.value));
 
 onMount(() => {
-  pageState.jobIdsHidden = new SvelteSet();
   Page.advanceState({
     state: pageState,
     httpClient,
@@ -33,7 +34,7 @@ onMount(() => {
     <div class="grid gap-4">
       {#if pageState.fetching === "none"}
         {#each jobs as job (job.id)}
-          <JobItem {job} state={pageState} />
+          <JobItem {job} {jobIdsHidden} />
         {:else}
           <div class="text-center py-8">
             No jobs found matching your filters.
