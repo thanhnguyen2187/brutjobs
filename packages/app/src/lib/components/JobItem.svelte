@@ -8,19 +8,6 @@ interface Props {
 
 let { job, jobIdsHidden }: Props = $props();
 
-function getLevelBadgeClass(level: string) {
-  switch (level) {
-    case "junior":
-      return "badge-outline badge-info";
-    case "middle":
-      return "badge-outline badge-warning";
-    case "senior":
-      return "badge-outline badge-error";
-    default:
-      return "badge-outline";
-  }
-}
-
 function getLocationDisplay(job: Job) {
   return `${job.locationType} - ${job.locationCountry}`;
 }

@@ -1,6 +1,5 @@
 <script lang="ts">
 import { onMount } from "svelte";
-import { SvelteSet } from "svelte/reactivity";
 import JobFilters from "$lib/components/JobFilters.svelte";
 import JobItem from "$lib/components/JobItem.svelte";
 import { httpClient } from "$lib/default";
